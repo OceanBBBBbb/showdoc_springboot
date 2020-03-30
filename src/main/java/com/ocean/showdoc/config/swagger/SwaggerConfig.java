@@ -1,6 +1,7 @@
 package com.ocean.showdoc.config.swagger;
 
 import com.google.common.base.Predicates;
+import com.ocean.showdoc.common.GlobalConst;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -41,7 +42,7 @@ public class SwaggerConfig {
 
   private List<Parameter> setHeaders() {
     List<Parameter> parameters = new ArrayList<>();
-    parameters.add(new ParameterBuilder().name("token").description("token")
+    parameters.add(new ParameterBuilder().name(GlobalConst.USER_SESSION_KEY).description("用户登陆token")
         .modelRef(new ModelRef("string"))
         .parameterType("header")
         .required(false)

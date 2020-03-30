@@ -40,7 +40,7 @@
     <appender-ref ref ="FILE"/>
   </appender>
 
-  <logger name="org.apache.coyote.http11.Http11InputBuffer" level="DEBUG" additivity="false">
+  <logger name="org.apache.coyote.http11.Http11InputBuffer" level="info" additivity="false">
     <appender-ref ref="ASYNC-FILE" />
     <appender-ref ref ="STDOUT"/>
   </logger>
