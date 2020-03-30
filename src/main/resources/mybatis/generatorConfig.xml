@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+		<property name="javaFileEncoding" value="UTF-8"/>
+		<property name="useMapperCommentGenerator" value="true"/>
+
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<property name="mappers" value="com.ocean.showdoc.common.MyMapper"/>
+			<property name="caseSensitive" value="true"/>
+			<property name="forceAnnotation" value="true"/>
+			<property name="generateColumnConsts" value="true"/>
+			<property name="generateDefaultInstanceMethod" value="true"/>
+			<property name="beginningDelimiter" value="`"/>
+			<property name="endingDelimiter" value="`"/>
+			<!--使用 Data 时，Getter,Setter 无效-->
+			<property name="lombok" value="Getter,Setter,Data,ToString,Accessors,EqualsAndHashCode"/>
+			<property name="swagger" value="true"/>
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.LombokPlugin" >
+			<property name="hasLombok" value="true"/>
+		</plugin>
+
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" /><!-- 是否取消注释 -->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳 -->
+		</commentGenerator>
+		<jdbcConnection
+			connectionURL="jdbc:mysql://127.0.0.1:3306/showdoc"
+			driverClass="com.mysql.cj.jdbc.Driver" password="12345678" userId="root" />
+		<javaModelGenerator
+			targetPackage="com.ocean.showdoc.dao.entity" targetProject="src/main/java" />
+		<javaClientGenerator
+			targetPackage="com.ocean.showdoc.dao" targetProject="src/main/java"
+			type="ANNOTATEDMAPPER" />
+		<table tableName="catalogs" domainObjectName="Catalogs">
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="item" domainObjectName="Item">
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="page" domainObjectName="Page">
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="template" domainObjectName="Template">
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="user" domainObjectName="User">
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+	</context>
+</generatorConfiguration>
