@@ -2,6 +2,9 @@
 ShowDoc的Java语言版,Springboot版
 
 
+### 演示地址
+https://www.361shipin.com/showdoc/#/7
+
     springboot 2.*,maven,mysql。
 
 
@@ -14,8 +17,6 @@ ShowDoc的Java语言版,Springboot版
         前端的代码就是和Go语言版本一样的。后端主要加入了redis做用户缓存.
         
         
-演示地址:https://www.361shipin.com/showdoc/#/7
-一些说明:https://www.361shipin.com/showdoc/#/7?page_id=40
 
 ## 说明一下
 
