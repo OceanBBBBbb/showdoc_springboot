@@ -2,6 +2,7 @@ package com.ocean.showdoc.controller;
 
 import com.ocean.showdoc.common.GlobalConst;
 import com.ocean.showdoc.common.Rsp;
+import com.ocean.showdoc.common.RspCode;
 import com.ocean.showdoc.controller.param.catalogs.CatalogsRsp;
 import com.ocean.showdoc.controller.param.item.*;
 import com.ocean.showdoc.controller.param.page.PageRsp;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +33,11 @@ public class ItemController {
   private final PageService pageService;
   private final CatalogService catalogService;
 
-
-  public ItemController(ItemService itemService, StringRedisTemplate redisTemplate, PageService pageService, CatalogService catalogService) {
+  public ItemController(
+      ItemService itemService,
+      StringRedisTemplate redisTemplate,
+      PageService pageService,
+      CatalogService catalogService) {
     this.itemService = itemService;
     this.redisTemplate = redisTemplate;
     this.pageService = pageService;
@@ -45,12 +48,9 @@ public class ItemController {
   public Rsp<List<ItemRsp>> myList(HttpServletRequest request) {
 
     String token = request.getHeader(GlobalConst.USER_SESSION_KEY);
-    String uid = redisTemplate.opsForValue().get(token);
+    String uid = StringUtils.isEmpty(token) ? "" : redisTemplate.opsForValue().get(token);
     List<Item> items = itemService.getById(uid);
-    List<ItemRsp> rsps =
-        items.stream()
-            .map(ItemRsp::buildByItem)
-            .collect(Collectors.toList());
+    List<ItemRsp> rsps = items.stream().map(ItemRsp::buildByItem).collect(Collectors.toList());
     return Rsp.buildSuccess(rsps);
   }
 
@@ -58,7 +58,7 @@ public class ItemController {
   public Rsp<Void> add(AddReq addReq, HttpServletRequest request) {
 
     String token = request.getHeader(GlobalConst.USER_SESSION_KEY);
-    String uid = redisTemplate.opsForValue().get(token);
+    String uid = StringUtils.isEmpty(token) ? "1" : redisTemplate.opsForValue().get(token);
     itemService.add(addReq, uid);
     return Rsp.buildSuccessEmpty();
   }
@@ -67,15 +67,19 @@ public class ItemController {
   public Rsp<ItemInfoRsp> info(InfoReq infoReq, HttpServletRequest request) {
 
     String token = request.getHeader(GlobalConst.USER_SESSION_KEY);
-    String uid = StringUtils.isEmpty(token) ? "" :redisTemplate.opsForValue().get(token);
+    String uid = StringUtils.isEmpty(token) ? "" : redisTemplate.opsForValue().get(token);
     boolean isMe = !StringUtils.isEmpty(uid);
     Item item = itemService.getOneById(infoReq.getItem_id());
+    if(null == item){
+      return Rsp.buildFail(RspCode.PARAM_ERR,"文档不存在");
+    }
     // 单独的pages
-    List<PageRsp> pageRsps = pageService.getByItemIdCatId(infoReq.getItem_id(),0);
+    List<PageRsp> pageRsps = pageService.getByItemIdCatId(infoReq.getItem_id(), 0);
     // 查目录和目录下的目录和pages
     List<CatalogsRsp> byItemId = catalogService.getByItemId(infoReq.getItem_id());
     Menu menu = Menu.builder().pages(pageRsps).catalogs(byItemId).build();
-    ItemInfoRsp build = ItemInfoRsp.builder()
+    ItemInfoRsp build =
+        ItemInfoRsp.builder()
             .item_id(item.getId().toString())
             .item_title(item.getTitle())
             .item_type(1)
@@ -90,29 +94,28 @@ public class ItemController {
     return Rsp.buildSuccess(build);
   }
 
-
   @PostMapping("/detail")
-  public ItemRsp detail(Integer item_id){
+  public Rsp<ItemRsp> detail(Integer item_id) {
     Item item = itemService.getOneById(item_id);
-    return ItemRsp.buildByItem(item);
+    if(null == item){
+      return Rsp.buildFail(RspCode.PARAM_ERR,"文档不存在");
+    }
+    return Rsp.buildSuccess(ItemRsp.buildByItem(item));
   }
 
   @PostMapping("/delete")
-  public Rsp<Void> delete(Integer item_id, HttpServletRequest request){
+  public Rsp<Void> delete(Integer item_id, HttpServletRequest request) {
     String token = request.getHeader(GlobalConst.USER_SESSION_KEY);
-    String uid = redisTemplate.opsForValue().get(token);
+    String uid = StringUtils.isEmpty(token) ? "" : redisTemplate.opsForValue().get(token);
     // TODO 对应的子内容也需要删除
-    int result = itemService.delOneById(uid,item_id);
+    int result = itemService.delOneById(uid, item_id);
     return Rsp.buildSuccessEmpty();
   }
 
-
   @PostMapping("/update")
-  public ItemRsp Update(AddReq addReq){
+  public ItemRsp Update(AddReq addReq) {
     // TODO
     Item item = itemService.getOneById(addReq.getItem_id());
     return ItemRsp.buildByItem(item);
   }
-
-
 }

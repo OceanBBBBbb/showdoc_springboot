@@ -13,7 +13,8 @@ public enum RspCode {
   UN_LOGIN(10000, "用户未登录"),
   NEED_LOGIN(10102, "需要登陆"),
   ALREADY_REGISTER(11100, "用户名已注册"),
-  PARAM_ERR(11111, "参数错误");
+  PARAM_ERR(11111, "参数错误"),
+  SYSTEM_ERR(11112, "系统繁忙,请稍后重试");
 
   RspCode(int code, String message) {
     this.code = code;
