@@ -67,7 +67,7 @@ public class ItemController {
   public Rsp<ItemInfoRsp> info(InfoReq infoReq, HttpServletRequest request) {
 
     String token = request.getHeader(GlobalConst.USER_SESSION_KEY);
-    String uid = redisTemplate.opsForValue().get(token);
+    String uid = StringUtils.isEmpty(token) ? "" :redisTemplate.opsForValue().get(token);
     boolean isMe = !StringUtils.isEmpty(uid);
     Item item = itemService.getOneById(infoReq.getItem_id());
     // 单独的pages

@@ -30,7 +30,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info(request.getRequestURI());
         String token = request.getHeader(GlobalConst.USER_SESSION_KEY);
         log.info("token={}",token);
-        String uid = redisTemplate.opsForValue().get(token);
+        String uid = StringUtils.isEmpty(token) ? "" : redisTemplate.opsForValue().get(token);
 
         if (StringUtils.isEmpty(uid))  {
             response.sendError(403,"未登陆");

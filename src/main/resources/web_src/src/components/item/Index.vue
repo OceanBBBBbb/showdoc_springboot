@@ -249,6 +249,7 @@ export default {
         that.axios.get(url, params)
           .then(function (response) {
             if (response.data.error_code === 0 ) {
+              window.localStorage.removeItem("token");
               that.$router.push({
                   path: '/'
                 });
