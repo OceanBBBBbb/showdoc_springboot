@@ -23,6 +23,7 @@ target/
 /nbproject/private/
 /nbbuild/
 /dist/
+/test/
 /nbdist/
 /.nb-gradle/
 /.mvn/
@@ -31,3 +32,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+userConfig.js
+
+# Editor directories and files
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.zip
+*.sh
