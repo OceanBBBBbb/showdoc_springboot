@@ -24,7 +24,7 @@ https://www.361shipin.com/showdoc/#/7
 自己体验后,知道的一些bugs;
 
 ### 编辑界面
-[![](https://ftp.bmp.ovh/imgs/2020/04/111aa4a2d035ae18.png)](https://ftp.bmp.ovh/imgs/2020/04/111aa4a2d035ae18.png)
+[](https://ftp.bmp.ovh/imgs/2020/04/111aa4a2d035ae18.png)
 
 ## 二次开发
 现在还留着模版模块没有开发,二次开发可以先完成这个内容的RUCD来熟悉.内容都比较简单.
